@@ -4,11 +4,13 @@
  */
 package Doctor_UI;
 
+import java.io.Serializable;
+
 /**
  *
  * @author trant
  */
-public class Appointment {
+public class Appointment implements Serializable{
     private String ID;
     private String Patientname;
     private int Age;
