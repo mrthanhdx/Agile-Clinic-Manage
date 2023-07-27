@@ -92,7 +92,7 @@ public class DoctorForm extends javax.swing.JFrame {
                 gender = "Unkown";
             }
             String occupation = cbxOccupation.getSelectedItem() + "";
-            String doctor = cbxOccupation.getSelectedItem() + "";
+            String doctor = cbxDoctor.getSelectedItem() + "";
             String date = txtDate.getText();
             int clinic = rdClinic1.isSelected() ? 1 : 2;
             String note = txtNote.getText();
@@ -102,6 +102,7 @@ public class DoctorForm extends javax.swing.JFrame {
     }
 
     private void addData() {
+        List<Appointment> list = new AppointmentRepo().getList();
         if (isValidate()) {
             String id = txtId.getText();
             String name = txtName.getText();
@@ -115,12 +116,23 @@ public class DoctorForm extends javax.swing.JFrame {
                 gender = "Unkown";
             }
             String occupation = cbxOccupation.getSelectedItem() + "";
-            String doctor = cbxOccupation.getSelectedItem() + "";
+            String doctor = cbxDoctor.getSelectedItem() + "";
             String date = txtDate.getText();
             int clinic = rdClinic1.isSelected() ? 1 : 2;
             String note = txtNote.getText();
-            new AppointmentRepo().saveData(id, name, age, gender, occupation, doctor, date, clinic, note);
-            JOptionPane.showMessageDialog(this, "Add Successfully !");
+            boolean isExist = false;
+            for (Appointment appointment : list) {
+                if (appointment.getID().equalsIgnoreCase(id)) {
+                    JOptionPane.showMessageDialog(this, "This Medical ID is already exist !");
+                    isExist =true;
+                    break;
+                } 
+            } 
+            if (!isExist) {
+                new AppointmentRepo().saveData(id, name, age, gender, occupation, doctor, date, clinic, note);
+                    JOptionPane.showMessageDialog(this, "Add Successfully !");
+            }
+
         }
     }
 
@@ -511,15 +523,15 @@ public class DoctorForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btnSearchByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchByIdActionPerformed
-       String IdSearch = txtIdSearch.getText();
-       List<Appointment> list = new AppointmentRepo().getList();
-       DefaultTableModel model = (DefaultTableModel) tblList.getModel();
-       model.setRowCount(0);
+        String IdSearch = txtIdSearch.getText();
+        List<Appointment> list = new AppointmentRepo().getList();
+        DefaultTableModel model = (DefaultTableModel) tblList.getModel();
+        model.setRowCount(0);
         for (Appointment appointment : list) {
             if (appointment.getID().equalsIgnoreCase(IdSearch)) {
                 model.addRow(new Object[]{appointment.getID(), appointment.getPatientname(), appointment.getAge(),
-                appointment.getGender(), appointment.getOccupation(), appointment.getDoctor(), appointment.getDate(),
-                appointment.getClinic(), appointment.getNote()});
+                    appointment.getGender(), appointment.getOccupation(), appointment.getDoctor(), appointment.getDate(),
+                    appointment.getClinic(), appointment.getNote()});
             }
         }
         JOptionPane.showMessageDialog(this, "search complete !");

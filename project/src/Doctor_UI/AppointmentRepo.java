@@ -36,7 +36,7 @@ public class AppointmentRepo {
         Connection conn = ConnectionProvider.getConnection();
         String sqlInsert = String.format("insert into medical values('%s','%s',%d,'%s','%s','%s','%s',%d,'%s')",
                 medical, patientname, age, gender, occ, doctor, date, clinic, note);
-        System.out.println(sqlInsert);
+//        System.out.println(sqlInsert);
         try {
             PreparedStatement stmt = conn.prepareStatement(sqlInsert);
             stmt.execute();
@@ -57,12 +57,12 @@ public class AppointmentRepo {
         }
     }
 
-    public void updateData(String medicalid, String patientname, int age, String gender, String occ, String doctor,
+    public void updateData(String medicalID, String patientname, int age, String gender, String occ, String doctor,
             String date, int clinic, String note) {
         Connection conn = ConnectionProvider.getConnection();
-        String sqlUpdate = String.format("update MEDICAL set medicalid ='%s',"
-                + "PATIENTNAME= '%s',age=%d,Gender='%s',occupation ='%s',doctor = '%s',dateapm='%s',clinic =%d,Note ='%s'",
-                medicalid, patientname, age, gender, occ, doctor, date, clinic, note);
+        String sqlUpdate = String.format("update MEDICAL set "
+                + "PATIENTNAME= '%s',age=%d,Gender='%s',occupation ='%s',doctor = '%s',dateapm='%s',clinic =%d,Note ='%s'where medicalid ='%s'" ,
+                patientname, age, gender, occ, doctor, date, clinic, note,medicalID);
         try {
             PreparedStatement stmt = conn.prepareStatement(sqlUpdate);
             stmt.execute();
